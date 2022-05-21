@@ -79,9 +79,14 @@ Options:
 def print_preamble(scriptname = ''):
     preambtxt = "=========================================================================\n"
     preambtxt += "\t Running Task: {} \n \t \t Version: 0.03 Release Date: 2019-07-03 \n \t \t Updated on: 2022-01-05\n".format(scriptname)
-    preambtxt += "\t \t Developed By : Sunil Chandra, \n \t \t South African Astronomical Observatory, Cape Town \n \t \t CSR, North-West University, South Africa \n \t \t Last Updated on 05, January, 2022 \n"
+    preambtxt += "\t \t Developed By : Sunil Chandra, \n \t \t South African Astronomical Observatory, Cape Town \n \t \t CSR, North-West"
+    preambtxt += " University, South Africa \n \t \t Last Updated on 05, January, 2022 \n"
     preambtxt += "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
-    preambtxt += "The estimations provided by this script is based on actual SXT observations. The profiles used here are corrected for background counts. This script is best suited for point sources. You may expect ~5 % uncertainity in flux estimations while extracting ARFs for sources with fluxes ~ 1 Crab or brighter... \n The parametric way of estimating the factor uses  kings's profile as functional form [with best fit archived parameters].\n"
+    preambtxt += "The estimations provided by this script is based on actual SXT observations." 
+    preambtxt += "The profiles used here are corrected for background counts. This script is best suited for" 
+    preambtxt += "point sources. You may expect ~5 % uncertainity in flux estimations while extracting ARFs for sources" 
+    preambtxt += "with fluxes ~ 1 Crab or brighter... \n The parametric way of estimating the factor uses  "
+    preambtxt += "kings's profile as functional form [with best fit archived parameters].\n"
     
     preambtxt += "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
     preambtxt += "=========================================================================\n"
@@ -129,19 +134,19 @@ def GetCoeff4romProfile(radius = 15, mode = 'A', datamatrix = None, parammatrix 
             finalcoeff = []
             for rad2use in radius :
                  coeff2prnt = np.interp(rad2use, xp, fp)
-                 strout += "The Norm. EEF Coeff. for radius {}' = {} \n".format(rad2use, np.round(coeff2prnt, 3))
+                 strout += f"The Norm. EEF Coeff. for radius {rad2use}' = {np.round(coeff2prnt, 3)} \n"
                  finalcoeff.append(coeff2prnt)
             finalcoeff = np.array(finalcoeff, float)
         else :
             coeff2prnt = np.interp(radius, xp, fp, left = None, right = None)
-            strout += "The Norm. EEF Coeff. for radius {}' = {} \n".format(radius, np.round(coeff2prnt, 3))
+            strout += f"The Norm. EEF Coeff. for radius {radius}' = {np.round(coeff2prnt, 3)} \n"
             finalcoeff = float(Coeff2prnt[0])
         tbl4confreg = tbl2use
 
         strout += " +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
-        strout += " The radius for 60% containment of photons  : {} arcmin \n".format(np.round(np.interp(0.60, tbl4confreg[1], tbl4confreg[0]),2))
-        strout += " The radius for 90% containment of photons  : {} arcmin \n".format(np.round(np.interp(0.90, tbl4confreg[1], tbl4confreg[0]),2))
-        strout += " The radius for 95% containment of photons  : {} arcmin \n".format(np.round(np.interp(0.95, tbl4confreg[1], tbl4confreg[0]),2))
+        strout += f" The radius for 60% containment of photons  : {np.round(np.interp(0.60, tbl4confreg[1], tbl4confreg[0]),2)} arcmin \n"
+        strout += f" The radius for 90% containment of photons  : {np.round(np.interp(0.90, tbl4confreg[1], tbl4confreg[0]),2)} arcmin \n"
+        strout += f" The radius for 95% containment of photons  : {np.round(np.interp(0.95, tbl4confreg[1], tbl4confreg[0]),2)} arcmin \n"
         strout += " +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
 
 
@@ -153,21 +158,21 @@ def GetCoeff4romProfile(radius = 15, mode = 'A', datamatrix = None, parammatrix 
             finalcoeff = []
             for rad2use in radius :
                 Coeff2prnt = GetIntegKingsProf(param2fit, [rad2use])
-                strout += "The Norm. EEF Coeff. for radius {}' = {} \n".format(rad2use, np.round(Coeff2prnt[0], 3))
+                strout += f"The Norm. EEF Coeff. for radius {rad2use}' = {np.round(Coeff2prnt[0], 3)} \n"
                 finalcoeff.append(Coeff2prnt[0])
             finalcoeff = np.array(finalcoeff, float)
         else :
             Coeff2prnt = GetIntegKingsProf(param2fit, [radius])
-            strout += "The Norm. EEF Coeff. for radius {}' = {} \n".format(radius, np.round(Coeff2prnt[0], 3))
+            strout += f"The Norm. EEF Coeff. for radius {radius}' = {np.round(Coeff2prnt[0], 3)} \n"
             finalcoeff = float(Coeff2prnt[0])
         
         xconfreg = np.arange(0, 21, 0.25)
         tbl4confreg = [xconfreg, GetIntegKingsProf(param2fit, xconfreg)]
         #print tbl4confreg[1]
         strout += " ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
-        strout += " The radius for 60% containment of photons  : {} arcmin \n".format(np.round(np.interp(0.60, tbl4confreg[1], tbl4confreg[0]),2))
-        strout += " The radius for 90% containment of photons  : {} arcmin \n".format(np.round(np.interp(0.90, tbl4confreg[1], tbl4confreg[0]),2))
-        strout += " The radius for 95% containment of photons  : {} arcmin \n".format(np.round(np.interp(0.95, tbl4confreg[1], tbl4confreg[0]),2))
+        strout += f" The radius for 60% containment of photons  : {np.round(np.interp(0.60, tbl4confreg[1], tbl4confreg[0]),2)} arcmin \n"
+        strout += f" The radius for 90% containment of photons  : {np.round(np.interp(0.90, tbl4confreg[1], tbl4confreg[0]),2)} arcmin \n"
+        strout += f" The radius for 95% containment of photons  : {np.round(np.interp(0.95, tbl4confreg[1], tbl4confreg[0]),2)} arcmin \n"
         strout += " +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
         
     else :
@@ -196,8 +201,9 @@ def Str4romRADvec(Radvec=[15], shape='C', outstem = None, delimiter = "to"):
     return finarfflname
 
 
-def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refarf = None, evtfile = None, mode = 'b', 
-                          datamatrix = None, parammatrix=None, vigcorrflag = True, coordtyp = 1):
+def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refarf = None, 
+						evtfile = None, mode = 'b', datamatrix = None, parammatrix=None, 
+						vigcorrflag = True, coordtyp = 1):
 
     from astropy.io import fits
 
@@ -212,24 +218,25 @@ def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refa
 
         pixscale = 4.122/60.
         
-        shape, coordinate, RAD = regextn['SHAPE'][0], (regextn['X'][0][0], regextn['Y'][0][0]), regextn['R'][0]
+        shape, coordinate = regextn['SHAPE'][0], (regextn['X'][0][0], regextn['Y'][0][0]) 
+        RAD =regextn['R'][0]
         rotang, component = regextn['ROTANG'][0], regextn['COMPONENT'][0]
         
         txt2prnt = "++++++++ Region Info ++++++++++\n"
-        txt2prnt += "SHAPE : {}\n".format(shape)
-        txt2prnt += "Centered at SKY :{}\n".format(coordinate)
-        txt2prnt += "Of Radius (in pix): {}\n".format(RAD)
+        txt2prnt += f"SHAPE : {shape}\n"
+        txt2prnt += f"Centered at SKY :{coordinate}\n"
+        txt2prnt += f"Of Radius (in pix): {RAD}\n"
         
         #print (len(RAD))
         if len(rotang) > 0:
-            txt2prnt += "Rotation : {}\n".format(rotang)
+            txt2prnt += f"Rotation : {rotang}\n"
         if len(component) > 0:
-            txt2prnt += "Component : {}\n".format(component)
+            txt2prnt += f"Component : {component}\n"
         txt2prnt += "++++++++++++++++++++++++++++++\n"
         print(txt2prnt)
         convfacpix2arcm = 4.122/60
         
-        print ("outstem : {}".format(outstem))
+        print (f"outstem : {outstem}")
         if shape == 'CIRCLE' :
             
             shape2use = 'C'
@@ -237,15 +244,20 @@ def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refa
             radinarcm = convfacpix2arcm * RAD[0]
             
             #print(radinarcm)
-            str4logGetCoeff, Coeff4corr = GetCoeff4romProfile(radius = radinarcm, mode = mode, datamatrix = datamatrix, 
-                                                                  parammatrix = parammatrix, strout = str4logGetCoeff)
+            str4logGetCoeff, Coeff4corr = GetCoeff4romProfile(radius = radinarcm, mode = mode, 
+																datamatrix = datamatrix, 
+																parammatrix = parammatrix, 
+																strout = str4logGetCoeff)
             
             finStr4prod = Str4romRADvec(Radvec = RAD, shape = shape2use, delimiter = "to", outstem = outstem)
             
-            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, outstem = finStr4prod, 
-                                                                     vigcorrflag = vigcorrflag, mode = mode, datamatrix = datamatrix,
-                                                                     parammatrix = parammatrix, evtfile = evtfile, coordtyp = coordtyp, 
-                                                                     Coeff4corr = Coeff4corr, str4logGetCoeff = str4logGetCoeff)
+            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, 
+																	outstem = finStr4prod, 
+																	vigcorrflag = vigcorrflag, mode = mode, 
+																	datamatrix = datamatrix, 
+																	parammatrix = parammatrix, evtfile = evtfile,
+																	coordtyp = coordtyp, Coeff4corr = Coeff4corr, 
+																	str4logGetCoeff = str4logGetCoeff)
 
 
         elif shape == 'ANNULUS' :
@@ -254,19 +266,25 @@ def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refa
             
             radinarcm1 = convfacpix2arcm * RAD[0]
             radinarcm2 = convfacpix2arcm * RAD[-1]
-            str4logGetCoeff1, Coeff4corr1 = GetCoeff4romProfile(radius = radinarcm1, mode = mode, datamatrix = datamatrix, 
-                                                                    parammatrix = parammatrix, strout = str4logGetCoeff)
+            str4logGetCoeff1, Coeff4corr1 = GetCoeff4romProfile(radius = radinarcm1, 
+																	mode = mode, datamatrix = datamatrix, 
+                                                                    parammatrix = parammatrix, 
+                                                                    strout = str4logGetCoeff)
             
-            str4logGetCoeff2, Coeff4corr2 = GetCoeff4romProfile(radius = radinarcm2, mode = mode, datamatrix = datamatrix, 
-                                                                    parammatrix = parammatrix, strout = str4logGetCoeff)
+            str4logGetCoeff2, Coeff4corr2 = GetCoeff4romProfile(radius = radinarcm2, mode = mode, 
+																	datamatrix = datamatrix, 
+                                                                    parammatrix = parammatrix, 
+																	strout = str4logGetCoeff)
             fincoeff = Coeff4corr2 - Coeff4corr1
             #print ([radinarcm1, radinarcm2, Coeff4corr2, Coeff4corr1, fincoeff])
             finStr4prod = Str4romRADvec(Radvec = RAD, shape = shape2use, delimiter = "to", outstem = outstem)
             
-            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, outstem = finStr4prod, 
-                                                                     vigcorrflag = vigcorrflag, mode = mode, datamatrix = datamatrix,
-                                                                     parammatrix = parammatrix, evtfile = evtfile, coordtyp = coordtyp,
-                                                                     Coeff4corr = fincoeff, str4logGetCoeff = str4logGetCoeff)
+            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, 
+																	outstem = finStr4prod, vigcorrflag = vigcorrflag, 
+																	mode = mode, datamatrix = datamatrix,
+																	parammatrix = parammatrix, evtfile = evtfile, 
+																	coordtyp = coordtyp, Coeff4corr = fincoeff,
+																	str4logGetCoeff = str4logGetCoeff)
 
 
         elif shape == 'BOX' :
@@ -279,15 +297,18 @@ def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refa
             
             eqrad = eqrad * convfacpix2arcm
             
-            str4logGetCoeff, Coeff4corr = GetCoeff4romProfile(radius = eqrad, mode = mode, datamatrix = datamatrix, 
-                                                                  parammatrix = parammatrix, strout = str4logGetCoeff)
+            str4logGetCoeff, Coeff4corr = GetCoeff4romProfile(radius = eqrad, mode = mode, 
+																datamatrix = datamatrix, parammatrix = parammatrix,
+																strout = str4logGetCoeff)
             
             finStr4prod = Str4romRADvec(Radvec = RAD, shape = shape2use, delimiter = "N", outstem = outstem)
             
-            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, outstem = finStr4prod, 
-                                                                     vigcorrflag = vigcorrflag, mode = mode, datamatrix = datamatrix,
-                                                                     parammatrix = parammatrix, evtfile = evtfile, coordtyp = coordtyp,
-                                                                     Coeff4corr = Coeff4corr, str4logGetCoeff = str4logGetCoeff)
+            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, 
+																	outstem = finStr4prod, vigcorrflag = vigcorrflag,
+																	mode = mode, datamatrix = datamatrix,
+																	parammatrix = parammatrix, evtfile = evtfile, 
+																	coordtyp = coordtyp, Coeff4corr = Coeff4corr,
+																	str4logGetCoeff = str4logGetCoeff)
 
 
             
@@ -299,14 +320,19 @@ def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refa
             
             eqrad = convfacpix2arcm * np.sqrt(eqarea)
             
-            str4logGetCoeff, Coeff4corr = GetCoeff4romProfile(radius = eqrad, mode = mode, datamatrix = datamatrix, parammatrix = parammatrix, strout = str4logGetCoeff)
+            str4logGetCoeff, Coeff4corr = GetCoeff4romProfile(radius = eqrad, mode = mode, 
+																datamatrix = datamatrix, 
+																parammatrix = parammatrix, 
+																strout = str4logGetCoeff)
             
             finStr4prod = Str4romRADvec(Radvec = RAD, shape = shape2use, delimiter = "N", outstem = outstem)
             
-            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, outstem = finStr4prod, 
-                                                                     vigcorrflag = vigcorrflag, mode = mode, datamatrix = datamatrix,
-                                                                     parammatrix = parammatrix, evtfile = evtfile, coordtyp = coordtyp,
-                                                                     Coeff4corr = Coeff4corr, str4logGetCoeff = str4logGetCoeff)
+            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate, 
+																	outstem = finStr4prod, vigcorrflag = vigcorrflag,
+																	mode = mode, datamatrix = datamatrix,
+																	parammatrix = parammatrix, evtfile = evtfile, 
+																	coordtyp = coordtyp, Coeff4corr = Coeff4corr,
+																	str4logGetCoeff = str4logGetCoeff)
             
         elif shape == 'BOXANNULUS':
             
@@ -319,19 +345,27 @@ def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refa
             eqrad2 = convfacpix2arcm * np.sqrt(eqarea2/np.pi)
 
 
-            str4logGetCoeff1, Coeff4corr1 = GetCoeff4romProfile(radius = eqrad1, mode = mode, datamatrix = datamatrix, 
-                                                                    parammatrix = parammatrix, strout = str4logGetCoeff)
+            str4logGetCoeff1, Coeff4corr1 = GetCoeff4romProfile(radius = eqrad1, mode = mode, 
+																	datamatrix = datamatrix, 
+                                                                    parammatrix = parammatrix, 
+                                                                    strout = str4logGetCoeff)
             
-            str4logGetCoeff2, Coeff4corr2 = GetCoeff4romProfile(radius = eqrad2, mode = mode, datamatrix = datamatrix, 
-                                                                    parammatrix = parammatrix, strout = str4logGetCoeff)
+            str4logGetCoeff2, Coeff4corr2 = GetCoeff4romProfile(radius = eqrad2, mode = mode, 
+																	datamatrix = datamatrix, 
+                                                                    parammatrix = parammatrix, 
+                                                                    strout = str4logGetCoeff)
             fincoeff = Coeff4corr2 - Coeff4corr1
             
             finStr4prod = Str4romRADvec(Radvec = RAD, shape = shape2use, delimiter = "to", outstem = outstem)
             
-            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate,  outstem = finStr4prod,
-                                                                     vigcorrflag = vigcorrflag, mode = mode, datamatrix = datamatrix,
-                                                                     parammatrix = parammatrix, evtfile = evtfile, coordtyp = coordtyp,
-                                                                     Coeff4corr = fincoeff, str4logGetCoeff = str4logGetCoeff)
+            file2ret, str4logGetCoeff = ARFMakerUsingREFSXTARFv2(refarf = refarf, coord = coordinate,  
+																	outstem = finStr4prod,
+																	vigcorrflag = vigcorrflag, mode = mode, 
+																	datamatrix = datamatrix,
+																	parammatrix = parammatrix, evtfile = evtfile,
+																	coordtyp = coordtyp,
+																	Coeff4corr = fincoeff, 
+																	str4logGetCoeff = str4logGetCoeff)
 
 
         else :
@@ -347,9 +381,10 @@ def MainRunOverShapes(phafile = None, outstem = None, str4logGetCoeff = "", refa
 
 
 
-def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v00_auto', vigcorrflag = True, mode = 'a', 
-                                 datamatrix = 'datamatrix', parammatrix = 'parammatrix', evtfile = None, coordtyp = 0, 
-                                 Coeff4corr = 0.5, str4logGetCoeff = 'log') :
+def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v00_auto', vigcorrflag = True,
+								mode = 'a', datamatrix = 'datamatrix', parammatrix = 'parammatrix', 
+								evtfile = None, coordtyp = 0, 
+								Coeff4corr = 0.5, str4logGetCoeff = 'log') :
 
     #print ("outStem: {} ".format(outstem))
     def SrcRadiiCorr(refarf = None, coeff2prnt = 1.0, outstem = outstem) :
@@ -378,10 +413,12 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
     def ARFOffAngleCorr(inparf = None, offangle = None, outarf=None) :
 
         if ( inparf != None ) and (offangle != None) :
-            print ("ARF Correction for Off-Axis Angle : \"yes\" \n Input ARF File Name : {} \n Input Off-Axis Angle : {}".format(inparf, offangle))
+            print (f"ARF Correction for Off-Axis Angle : \"yes\" \n Input ARF File Name : {inparf} \n" 
+						+f"Input Off-Axis Angle : {offangle}")
             if not os.path.exists(inparf) :
 
-                inparf = input("Enter The Full Path of ARF File distributed by SXT Team as you had either provided it wrongly or somehow deleted from the path you enterd : ")
+                inparf = input("Enter The Full Path of ARF File distributed by SXT Team as you had either"+ 
+								"provided it wrongly or somehow deleted from the path you enterd : ")
 
                 if not inparf :
                     os._exit(0)
@@ -428,7 +465,7 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
             outfilevigcorr = "{}_VigCorr.arf".format(os.path.splitext(outarf)[0])
             outarfvigcorr = ARFOffAngleCorr(inparf = outarf, offangle = offangle, outarf = outfilevigcorr)
             if os.path.exists(outarfvigcorr) :
-                str4logGetCoeff += "Resulting ARF File {} is corrected for Vig. Effect....\n".format(outarfvigcorr)
+                str4logGetCoeff += f"Resulting ARF File {outarfvigcorr} is corrected for Vig. Effect....\n"
                 file2ret = outarfvigcorr
     else :
         str4logGetCoeff += "ARF File Generation failed....Please recheck your inputs! \n"
@@ -440,44 +477,75 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
 def main() :
 
     import optparse
-
+    from pathlib import Path 
+	#To implement the parser for the input parameters from command line
     usage = "usage: %prog [options] "
     parser = optparse.OptionParser(usage)
 
-    parser.add_option("-m", "--mode", dest = "mode", help = "Mode for extraction; \n Two options a) using table and b) using fit parameters \n Default is b) \n Input options are [\'a\', \'tbl\', \'tab\', \'t\', \'table\'] for a) and one of [\'b\', \'par\', \'param\', \'fit\', \'fitpar\'] for b) ", default = 'b')
+    parser.add_option("-m", "--mode", dest = "mode", help = "Mode for extraction;" +
+						"\n Two options a) using table and b) using fit parameters \n Default is b) \n" +
+						"Input options are [\'a\', \'tbl\', \'tab\', \'t\', \'table\'] for a) and one of"+
+						" [\'b\', \'par\', \'param\', \'fit\', \'fitpar\'] for b) ", default = 'b')
 
-    parser.add_option("-r", "--radius", dest = "radius", help = "Source Region Size in arcmin.. Always use for cicular regions...\n Multiple radii (r1, r2, r3) can be entered in format or \'r1nr2nr3\' or \'r1ANDr2ANDr3\' or \'r1ORr2ORr3\'\n Default is 15 arcm", default = 15)
+    parser.add_option("-r", "--radius", dest = "radius", help = "Source Region Size in arcmin.. "+
+						"Always use for cicular regions...\n Multiple radii (r1, r2, r3) can be entered"+
+						" in format or \'r1nr2nr3\' or \'r1ANDr2ANDr3\' or \'r1ORr2ORr3\'\n Default is 15 arcm",
+						 default = 15)
 
-    parser.add_option("", "--sxtarf", dest = "sxtarf", help = "The Full Path of Base ARF provided by SXT Team...\n  For Example \'sxt_pc_excl00_v04.arf\'", default = None)
+    parser.add_option("", "--sxtarf", dest = "sxtarf", help = "The Full Path of Base ARF provided by SXT Team."+
+						"..\n  For Example \'sxt_pc_excl00_v04.arf\'", default = None)
 
-    parser.add_option("-e", "--evtfile", dest = "evtfile", help = "The Events file in case you are entering source postion in sky pixels instead of detector coordinates.....Default = None", default = None)
+    parser.add_option("-e", "--evtfile", dest = "evtfile", help = "The Events file in case you are entering" +
+						"source postion in sky pixels instead of detector coordinates.....Default = None",
+						 default = None)
 
-    parser.add_option("", "--sxtpha", dest = "sxtpha", help = "The Name of the input SXT spectrum [needed to fetch source region related information]...\n  For Example \'sxt_pc_mytarget_src.pha\'\n Default is None..[This means source coordinates should be entered manually]", default = None)
+    parser.add_option("", "--sxtpha", dest = "sxtpha", help = "The Name of the input SXT spectrum [needed to"+
+						"fetch source region related information]...\n  For Example \'sxt_pc_mytarget_src.pha\'"+
+						"\n Default is None..[This means source coordinates should be entered manually]",
+						default = None)
 
-    parser.add_option("-x", "--xpix", dest = "xpix", help = " X coordinate (RA) of the source position [sky/RAW pixels] ...\n Default is None [If None you should provide spectrum as input file", default = None)
+    parser.add_option("-x", "--xpix", dest = "xpix", help = " X coordinate (RA) of the source position"+ 
+						"[sky/RAW pixels] ...\n Default is None [If None you should provide spectrum as input file",
+						 default = None)
 
-    parser.add_option("-y", "--ypix", dest = "ypix", help = " Y coordinate (DEC) of the source position [sky/RAW pixels] ...\n Default is None [If None you should provide spectrum as input file", default = None)
+    parser.add_option("-y", "--ypix", dest = "ypix", help = " Y coordinate (DEC) of the source position"+
+						"[sky/RAW pixels] ...\n Default is None [If None you should provide spectrum as input file",
+						default = None)
 
-    parser.add_option("-o", "--outstem", dest = "outstem", help = " Stem for output ARF File...", default = "OutARF_v04")
+    parser.add_option("-o", "--outstem", dest = "outstem", help = " Stem for output ARF File...", 
+						default = "OutARF_v04")
 
-    parser.add_option("", "--coordtyp", dest = "coordtyp", help = "Input Coordinate Type, .i.e., Detector Coordinates or Sky Coordinates...Default is Sky \n The input options are ['Sky', 'sky', 'SKY', 's', 'S', 1, True] and/or ['RAW', 'raw', 'Raw', 'R', 'r', 0] \n Default is 'RAW' ", default = 'sky')
+    parser.add_option("", "--coordtyp", dest = "coordtyp", help = "Input Coordinate Type, .i.e., Detector"+
+						" Coordinates or Sky Coordinates...Default is Sky \n The input options are "+
+						"['Sky', 'sky', 'SKY', 's', 'S', 1, True] and/or ['RAW', 'raw', 'Raw', 'R', 'r', 0]"+
+						" \n Default is 'RAW' ", default = 'sky')
 
-    parser.add_option("", "--vigcorrflag", dest = "vigcorrflag", help = "The flag for Vignetting Correction for off-axis SXT observations, if needed...\n Accepted options are [1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 'no')
+    parser.add_option("", "--vigcorrflag", dest = "vigcorrflag", help = "The flag for Vignetting Correction"+
+						"for off-axis SXT observations, if needed...\n Accepted options are"+
+						"[1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 'no')
 
-    parser.add_option("", "--pltflag", dest = "pltflag", help = "The flag used for making the ARF diagnostics plot to display various versions...\n Accepted options are [1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 1)
+    parser.add_option("", "--pltflag", dest = "pltflag", help = "The flag used for making the ARF diagnostics"+
+						"plot to display various versions...\n Accepted options are "+
+						"[1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 1)
 
 
-    parser.add_option("", "--coeffonly", dest = "coeffonly", help = "The flag to print only the coefficients for the input radii..No ARF files will be generated.....\n Accepted options are [1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 'no')
+    parser.add_option("", "--coeffonly", dest = "coeffonly", help = "The flag to print only the coefficients"+
+						" for the input radii..No ARF files will be generated.....\n Accepted options are "+
+						"[1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 'no')
 
 
     (options, args) = parser.parse_args()
 
-    if len(sys.argv[1:]) == 0:
-        parser.print_help()
-        parser.exit()
+	#Extracting home dirs
+	home_dir = Path.home()
+	defarff = "sxt_pc_excl00_v04_20190608.arf"
+	sxtarfdir = os.path.join(home_dir, "auxpyscrpt", "SXTARFs")
+	if not os.path.exists(sxtarfdir):
+		os.makedirs(sxtarfdir)
+	
+	defarfpath = os.path.join(sxtarfdir, defarff)
 
-    #global mode, evtfile, refarf, vigcorrflag, sxtpha, coordtyp, pltflag, coeffonly, str4logGetCoeff
-     
+    #The input parameters... 
     mode = options.mode 
     evtfile = options.evtfile
     refarf = options.sxtarf
@@ -489,7 +557,45 @@ def main() :
     srcx, srcy = options.xpix, options.ypix 
     coeffonly, outstem = options.coeffonly, options.outstem
     
-    print (vigcorrflag)
+	listinppars = ["mode", "sxtpha", "evtfile", "refarf", "outstem", "vigcorrflag", "coordtyp",
+					"pltflag", "radius", "srcx", "srcy", "coeffonly"]
+					
+	Txt4Params = ["Mode : ", "The SXT input PHA file (sxtpha) : ", "The SXT input EVENTS file (evtfile) : ",
+					"The reference SXT ARF File (sxtarf): ", "The stem for output file name (outstem): ",
+					"Flag for the vignetting correction ? (vigcorrflag) :", "Flag for type of coordinate"+ 
+					"system (coordtyp): ", "The flag for verification plots (pltflag) :", 
+					"The input radius, used only if \'coeffonly\' flag is set \'yes\', (pltflag) : ", 
+					"The input source \'X\' coordinate, used only if \'coeffonly\' flag is set \'yes\',"+
+					" (srcx) : ", "The input source \'Y\' coordinate, used only if \'coeffonly\' flag is set \'yes\',"+
+					" (srcy) : ", "The flag whether only coefficient should be estimated of the ARF files "+
+					"should also be generated (coeffonly) :"]
+					
+	for mm in range(len(listinppars)):
+		inppar = listinppars[mm]
+		txtpar = Txt4Params[mm]
+		
+		if mm < 1:
+			inptxto = f"{txtpar} {eval(inppar)}\n"
+		else:
+			inptxto += f"{txtpar} {eval(inppar)}\n"	
+				
+	print (inptxto)
+	
+	if len(sys.argv[1:]) == 0 :
+		parser.print_help()
+		print (inptxto)
+		parser.exit()
+
+	if refarf in [None, "None", "NONE"]:
+		if os.path.exists(defarfpath):
+			refarf = defarfpath
+		else:
+			if not (coeffonly in ['NO', 'No', 'N', 'n', 'no']) or (coeffonly == 0) or (coeffonly == False):
+				refarf = input("Please input the reference ARF file with full path and Enter : ")
+			else:
+				refarf = None		
+	print (refarf)
+    
     #Vignetting Correction flag input ..
     if vigcorrflag in ['YES', 'Yes', 'Y', 'y', 'yes']:
         vigcorrflag = True 
