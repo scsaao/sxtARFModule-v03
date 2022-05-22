@@ -2,7 +2,7 @@
 #ARF file for custom source region in SXT data analysis 
 #In order to install this tool you need to run either of the following:
 #> sh install_sxtEEFModule.sh
-#    OR
+#...OR
 #> csh install_sxtEEFModule.csh
 #This step will created a directory 'auxpyscrpt/' in $HOME directory and copy files with appropriate links... 
 #This way a keyword 'sxtARFModule' in the .bashrc or .cshrc or .profile file of your computer
