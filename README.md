@@ -1,6 +1,6 @@
 # sxtARFModule-v03
 ### ARF file for custom source region in SXT data analysis 
->Please uncompress the downloaded module. You may use the following depending on archive type. 
+>Please uncompress the downloaded module. You may use the following depending on archive type.  
 ### tar xzvf SXTEEFModule_v03.tar.gz 
 ### OR 
 ### gunzip SXTEEFModule_v03.zip 
