@@ -20,7 +20,7 @@ verdist="v03"
 scrptname=`ls sxt_*ARF*.py`
 
 scrptname2=`ls make_*EEF*.py`
-auxpyfname="auxpyscrpt2tst"
+auxpyfname="auxpyscrpt"
 
 readmefile="readme.pdf"
 readmefilehtml="readme.html"
