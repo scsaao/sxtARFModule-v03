@@ -82,10 +82,10 @@ def print_preamble(scriptname = ''):
     preambtxt += "\t \t Developed By : Sunil Chandra, \n \t \t South African Astronomical Observatory, Cape Town \n \t \t CSR, North-West"
     preambtxt += " University, South Africa \n \t \t Last Updated on 05, January, 2022 \n"
     preambtxt += "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
-    preambtxt += "The estimations provided by this script is based on actual SXT observations." 
-    preambtxt += "The profiles used here are corrected for background counts. This script is best suited for" 
-    preambtxt += "point sources. You may expect ~5 % uncertainity in flux estimations while extracting ARFs for sources" 
-    preambtxt += "with fluxes ~ 1 Crab or brighter... \n The parametric way of estimating the factor uses  "
+    preambtxt += "The estimations provided by this script is based on actual SXT observations.\n" 
+    preambtxt += "The profiles used here are corrected for background counts.\n This script is best suited for" 
+    preambtxt += "point sources.\n You may expect ~5 % uncertainity in flux estimations while extracting ARFs for sources" 
+    preambtxt += "with fluxes ~ 1 Crab or brighter.\n The parametric way of estimating the factor uses  "
     preambtxt += "kings's profile as functional form [with best fit archived parameters].\n"
     
     preambtxt += "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
@@ -134,12 +134,12 @@ def GetCoeff4romProfile(radius = 15, mode = 'A', datamatrix = None, parammatrix 
             finalcoeff = []
             for rad2use in radius :
                  coeff2prnt = np.interp(rad2use, xp, fp)
-                 strout += f"The Norm. EEF Coeff. for radius {rad2use}' = {np.round(coeff2prnt, 3)} \n"
+                 strout += f"The Norm. EEF Coeff. for radius {rad2use} \' = {np.round(coeff2prnt, 3)} \n"
                  finalcoeff.append(coeff2prnt)
             finalcoeff = np.array(finalcoeff, float)
         else :
             coeff2prnt = np.interp(radius, xp, fp, left = None, right = None)
-            strout += f"The Norm. EEF Coeff. for radius {radius}' = {np.round(coeff2prnt, 3)} \n"
+            strout += f"The Norm. EEF Coeff. for radius {radius} \' = {np.round(coeff2prnt, 3)} \n"
             finalcoeff = float(Coeff2prnt[0])
         tbl4confreg = tbl2use
 
@@ -396,7 +396,7 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
         outarf2wrt = refsxtarf
         #Modify ARF based on estimated coeff. for a particular source region..
         outarf2wrt[1].data['SPECRESP'] =  coeff2prnt * outarf2wrt[1].data['SPECRESP']
-        finarfflname = "{}.arf".format(outstem)   
+        finarfflname = f"{outstem}.arf"   
         #Writing the modified ARF 
         outarf2wrt.writeto(finarfflname, overwrite=True)
         outarf2wrt.close()
@@ -436,7 +436,7 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
             arffl[1].data['SPECRESP'] = arffl[1].data['SPECRESP']*V
             if outarf == None :
                 outarfstem = os.path.splitext(os.path.basename(inparf))[0]
-                outarf = "{}_ArfVigCorr.arf".format(outarfstem)
+                outarf = f"{outarfstem}_ArfVigCorr.arf"
             arffl.writeto(outarf, overwrite=True)
             #arffl.close()
             return  outarf
@@ -446,7 +446,7 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
     outarf = SrcRadiiCorr(refarf = refarf, coeff2prnt = Coeff4corr, outstem = outstem)
     print(str4logGetCoeff)
     if outarf != None :
-        str4logGetCoeff += "ARF File {} written successfully...\n".format(outarf)
+        str4logGetCoeff += f"ARF File {outarf} written successfully...\n"
         file2ret = outarf
         if vigcorrflag :
             #Correcting Newly generated ARF for vignetting effect...
@@ -462,7 +462,7 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
                 X0, Y0 = GetCentralcoordLookup(evtfile, rawx=X0, rawy = Y0, coordtol=2e0, stepcoordtol=5e-1)
                 offangle = np.sqrt( (X - X0)**2 + (Y - Y0)**2 )*(4.122/60.)
             #ARF after Vig. Correction
-            outfilevigcorr = "{}_VigCorr.arf".format(os.path.splitext(outarf)[0])
+            outfilevigcorr = f"{os.path.splitext(outarf)[0]}_VigCorr.arf"
             outarfvigcorr = ARFOffAngleCorr(inparf = outarf, offangle = offangle, outarf = outfilevigcorr)
             if os.path.exists(outarfvigcorr) :
                 str4logGetCoeff += f"Resulting ARF File {outarfvigcorr} is corrected for Vig. Effect....\n"
@@ -476,65 +476,65 @@ def ARFMakerUsingREFSXTARFv2(refarf = None, coord = (0, 0), outstem = 'OutARF_v0
 
 def main() :
 
-    import optparse
-    from pathlib import Path 
-	#To implement the parser for the input parameters from command line
-    usage = "usage: %prog [options] "
-    parser = optparse.OptionParser(usage)
+	import optparse
+	from pathlib import Path 
+	#To implement the parser for the input parameters from command line	
+	usage = "usage: %prog [options] "
+	parser = optparse.OptionParser(usage)
 
-    parser.add_option("-m", "--mode", dest = "mode", help = "Mode for extraction;" +
+	parser.add_option("-m", "--mode", dest = "mode", help = "Mode for extraction;" +
 						"\n Two options a) using table and b) using fit parameters \n Default is b) \n" +
 						"Input options are [\'a\', \'tbl\', \'tab\', \'t\', \'table\'] for a) and one of"+
 						" [\'b\', \'par\', \'param\', \'fit\', \'fitpar\'] for b) ", default = 'b')
 
-    parser.add_option("-r", "--radius", dest = "radius", help = "Source Region Size in arcmin.. "+
+	parser.add_option("-r", "--radius", dest = "radius", help = "Source Region Size in arcmin.. "+
 						"Always use for cicular regions...\n Multiple radii (r1, r2, r3) can be entered"+
 						" in format or \'r1nr2nr3\' or \'r1ANDr2ANDr3\' or \'r1ORr2ORr3\'\n Default is 15 arcm",
 						 default = 15)
-
-    parser.add_option("", "--sxtarf", dest = "sxtarf", help = "The Full Path of Base ARF provided by SXT Team."+
+	
+	parser.add_option("", "--sxtarf", dest = "sxtarf", help = "The Full Path of Base ARF provided by SXT Team."+
 						"..\n  For Example \'sxt_pc_excl00_v04.arf\'", default = None)
 
-    parser.add_option("-e", "--evtfile", dest = "evtfile", help = "The Events file in case you are entering" +
+	parser.add_option("-e", "--evtfile", dest = "evtfile", help = "The Events file in case you are entering" +
 						"source postion in sky pixels instead of detector coordinates.....Default = None",
 						 default = None)
 
-    parser.add_option("", "--sxtpha", dest = "sxtpha", help = "The Name of the input SXT spectrum [needed to"+
+	parser.add_option("", "--sxtpha", dest = "sxtpha", help = "The Name of the input SXT spectrum [needed to"+
 						"fetch source region related information]...\n  For Example \'sxt_pc_mytarget_src.pha\'"+
 						"\n Default is None..[This means source coordinates should be entered manually]",
 						default = None)
 
-    parser.add_option("-x", "--xpix", dest = "xpix", help = " X coordinate (RA) of the source position"+ 
+	parser.add_option("-x", "--xpix", dest = "xpix", help = " X coordinate (RA) of the source position"+ 
 						"[sky/RAW pixels] ...\n Default is None [If None you should provide spectrum as input file",
 						 default = None)
 
-    parser.add_option("-y", "--ypix", dest = "ypix", help = " Y coordinate (DEC) of the source position"+
+	parser.add_option("-y", "--ypix", dest = "ypix", help = " Y coordinate (DEC) of the source position"+
 						"[sky/RAW pixels] ...\n Default is None [If None you should provide spectrum as input file",
 						default = None)
 
-    parser.add_option("-o", "--outstem", dest = "outstem", help = " Stem for output ARF File...", 
+	parser.add_option("-o", "--outstem", dest = "outstem", help = " Stem for output ARF File...", 
 						default = "OutARF_v04")
 
-    parser.add_option("", "--coordtyp", dest = "coordtyp", help = "Input Coordinate Type, .i.e., Detector"+
+	parser.add_option("", "--coordtyp", dest = "coordtyp", help = "Input Coordinate Type, .i.e., Detector"+
 						" Coordinates or Sky Coordinates...Default is Sky \n The input options are "+
 						"['Sky', 'sky', 'SKY', 's', 'S', 1, True] and/or ['RAW', 'raw', 'Raw', 'R', 'r', 0]"+
 						" \n Default is 'RAW' ", default = 'sky')
 
-    parser.add_option("", "--vigcorrflag", dest = "vigcorrflag", help = "The flag for Vignetting Correction"+
+	parser.add_option("", "--vigcorrflag", dest = "vigcorrflag", help = "The flag for Vignetting Correction"+
 						"for off-axis SXT observations, if needed...\n Accepted options are"+
 						"[1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 'no')
 
-    parser.add_option("", "--pltflag", dest = "pltflag", help = "The flag used for making the ARF diagnostics"+
+	parser.add_option("", "--pltflag", dest = "pltflag", help = "The flag used for making the ARF diagnostics"+
 						"plot to display various versions...\n Accepted options are "+
 						"[1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 1)
 
 
-    parser.add_option("", "--coeffonly", dest = "coeffonly", help = "The flag to print only the coefficients"+
+	parser.add_option("", "--coeffonly", dest = "coeffonly", help = "The flag to print only the coefficients"+
 						" for the input radii..No ARF files will be generated.....\n Accepted options are "+
 						"[1., True, 'yes', 'YES', 'y', 'Y'] \n Default is 'no'", default = 'no')
 
 
-    (options, args) = parser.parse_args()
+	(options, args) = parser.parse_args()
 
 	#Extracting home dirs
 	home_dir = Path.home()
@@ -546,16 +546,16 @@ def main() :
 	defarfpath = os.path.join(sxtarfdir, defarff)
 
     #The input parameters... 
-    mode = options.mode 
-    evtfile = options.evtfile
-    refarf = options.sxtarf
-    vigcorrflag  = options.vigcorrflag
-    sxtpha = options.sxtpha
-    coordtyp = options.coordtyp
-    pltflag = options.pltflag
-    radius = options.radius
-    srcx, srcy = options.xpix, options.ypix 
-    coeffonly, outstem = options.coeffonly, options.outstem
+	mode = options.mode 
+	evtfile = options.evtfile
+	refarf = options.sxtarf
+	vigcorrflag  = options.vigcorrflag	
+	sxtpha = options.sxtpha
+	coordtyp = options.coordtyp
+	pltflag = options.pltflag
+	radius = options.radius
+	srcx, srcy = options.xpix, options.ypix 
+	coeffonly, outstem = options.coeffonly, options.outstem
     
 	listinppars = ["mode", "sxtpha", "evtfile", "refarf", "outstem", "vigcorrflag", "coordtyp",
 					"pltflag", "radius", "srcx", "srcy", "coeffonly"]
@@ -580,7 +580,7 @@ def main() :
 			inptxto += f"{txtpar} {eval(inppar)}\n"	
 				
 	print (inptxto)
-	
+	#os._exit(0)
 	if len(sys.argv[1:]) == 0 :
 		parser.print_help()
 		print (inptxto)
@@ -596,72 +596,72 @@ def main() :
 				refarf = None		
 	print (refarf)
     
-    #Vignetting Correction flag input ..
-    if vigcorrflag in ['YES', 'Yes', 'Y', 'y', 'yes']:
-        vigcorrflag = True 
-    else :
-        vigcorrflag = False
+	#Vignetting Correction flag input ..
+	if vigcorrflag in ['YES', 'Yes', 'Y', 'y', 'yes']:
+		vigcorrflag = True 
+	else :
+		vigcorrflag = False
 
-    #Plot flag input ..
-    if (pltflag in ['YES', 'Yes', 'Y', 'y', 'yes']) or (pltflag == 1) or (pltflag == True):
-        pltflag = True 
-    else :
-        pltflag = False
+	#Plot flag input ..
+	if (pltflag in ['YES', 'Yes', 'Y', 'y', 'yes']) or (pltflag == 1) or (pltflag == True):
+		pltflag = True 
+	else :
+		pltflag = False
 
     #mode flag input ..
-    if mode.lower() in ['b', 'par', 'param', 'fit', 'fitpar']:
-        mode = 'b' 
-    else :
-        mode = 'a'
+	if mode.lower() in ['b', 'par', 'param', 'fit', 'fitpar']:
+		mode = 'b' 
+	else :
+		mode = 'a'
 
     #Plot flag input ..
-    if (pltflag in ['YES', 'Yes', 'Y', 'y', 'yes']) or (pltflag == 1) or (pltflag == True):
-        pltflag = True 
-    else :
-        pltflag = False
+	if (pltflag in ['YES', 'Yes', 'Y', 'y', 'yes']) or (pltflag == 1) or (pltflag == True):
+		pltflag = True 
+	else :
+		pltflag = False
 
     #coordtyp flag input ..
-    if (coordtyp in ['RAW', 'raw', 'Raw', 'R', 'r']) or (coordtyp == 0):
-        coordtyp = 0 
-    else :
-        coordtyp = 1
+	if (coordtyp in ['RAW', 'raw', 'Raw', 'R', 'r']) or (coordtyp == 0):
+		coordtyp = 0 
+	else :
+		coordtyp = 1
 
     #Coeffonly flag input ..
-    if (coeffonly in ['NO', 'No', 'N', 'n', 'no']) or (coeffonly == 0) or (coeffonly == False):
+	if (coeffonly in ['NO', 'No', 'N', 'n', 'no']) or (coeffonly == 0) or (coeffonly == False):
            
         #Extracting Source region related information...
-        if sxtpha != None :
-            str4logGetCoeff = "Input SXT-Spectrum : {} \t Used for source region info..\n".format(sxtpha)
-            if os.path.exists(sxtpha):
-                file2ret, str4logGetCoeff = MainRunOverShapes(phafile = sxtpha, outstem = outstem, str4logGetCoeff = "",
+		if sxtpha != None :
+			str4logGetCoeff = f"Input SXT-Spectrum : {sxtpha} \t Used for source region info..\n"
+			if os.path.exists(sxtpha):
+				file2ret, str4logGetCoeff = MainRunOverShapes(phafile = sxtpha, outstem = outstem, str4logGetCoeff = "",
                                                               refarf = refarf, evtfile = evtfile, mode = mode, 
                                                               datamatrix = datamatrix, parammatrix=parammatrix,
                                                               vigcorrflag = vigcorrflag, coordtyp= coordtyp)
                 #MainRunOverShapes(phafile = sxtpha, outstem = outstem)
-                if pltflag :
-                    try :
-                        from datetime import datetime
-                        datetimenow = datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace('-','').replace(' ','T').replace(":","h").split('h')[0]+'h'
-                    except :
-                        datetimenow = 'temp_now'
-                    outdigpltname = "{}_ARFCompPlt_{}".format(outstem, datetimenow)
-                    arflist2plt = [[refarf,'orig'], [file2ret, 'new']]
-                    ARFListPlotter(arflist = arflist2plt, figsize = [12,9], outdiagplt = outdigpltname)
+				if pltflag :
+					try :
+						from datetime import datetime
+						datetimenow = datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace('-','').replace(' ','T').replace(":","h").split('h')[0]+'h'
+					except :
+						datetimenow = 'temp_now'
+					outdigpltname = f"{outstem}_ARFCompPlt_{datetimenow}"
+					arflist2plt = [[refarf,'orig'], [file2ret, 'new']]
+					ARFListPlotter(arflist = arflist2plt, figsize = [12,9], outdiagplt = outdigpltname)
 
-            else:
-                sxtpha = input("The pha file parsed from command line is not found ... Please enter here with full path : ")
-                if not sxtpha:
-                    os._exit(0)
-                file2ret, str4logGetCoeff = MainRunOverShapes(phafile = sxtpha, outstem = outstem)
+			else:
+				sxtpha = input("The pha file parsed from command line is not found ... Please enter here with full path : ")
+				if not sxtpha:
+					os._exit(0)
+				file2ret, str4logGetCoeff = MainRunOverShapes(phafile = sxtpha, outstem = outstem)
                 
-            print(str4logGetCoeff)
-        else :
-            print ("coeffonly = False with Insufficient information!! \n QUITING!! ")
-            os._exit(999)
-    else : #when coeffonly is True 
-        radiivec = clarifyradius(radius)
-        str4logGetCoeff, finalcoeff = GetCoeff4romProfile(radius = radiivec, mode = mode, datamatrix = datamatrix, parammatrix = parammatrix, strout = "")
-        print(str4logGetCoeff)
+			print(str4logGetCoeff)
+		else :
+			print ("coeffonly = False with Insufficient information!! \n QUITING!! ")
+			os._exit(999)
+	else : #when coeffonly is True 
+		radiivec = clarifyradius(radius)
+		str4logGetCoeff, finalcoeff = GetCoeff4romProfile(radius = radiivec, mode = mode, datamatrix = datamatrix, parammatrix = parammatrix, strout = "")
+		print(str4logGetCoeff)
 
 
 def clarifyradius(radius) :
