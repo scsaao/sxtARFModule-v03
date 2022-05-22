@@ -5,12 +5,12 @@
 set verdist="v03"
 set scrptname=`ls sxt_*ARF*.py`
 set scrptname2=`ls make_*EEF*.py`
-set auxpyfname="auxpyscrpt2tst"
+set auxpyfname="auxpyscrpt"
 
 set readmefile="readme.pdf"
 set readmefilehtml="readme.html"
-set docdir="$HOME/auxpyscrpt2tst/docs/"
-set arfdir="$HOME/auxpyscrpt2tst/SXTARFs"
+set docdir="$HOME/$auxpyfname/docs/"
+set arfdir="$HOME/$auxpyfname/SXTARFs"
 
 mkdir -p $HOME/$auxpyfname
 mkdir -p $docdir
