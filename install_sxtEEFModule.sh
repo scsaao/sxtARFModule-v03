@@ -20,12 +20,25 @@ verdist="v03"
 scrptname=`ls sxt_*ARF*.py`
 
 scrptname2=`ls make_*EEF*.py`
-
-mkdir -p $HOME/auxpyscrpt/
+auxpyfname="auxpyscrpt2tst"
 
 readmefile="readme.pdf"
 readmefilehtml="readme.html"
-docdir=$HOME/auxpyscrpt/docs/
+docdir="$HOME/$auxpyfname/docs/"
+arfdir="$HOME/$auxpyfname/SXTARFs"
+
+mkdir -p $HOME/$auxpyfname
+mkdir -p $docdir
+mkdir -p $arfdir
+
+arflist=`find . -name "sxt*arf" | grep excl00`
+#copying the ARF files... if multiple 
+for arf in `echo $arflist`
+do
+    if [ -f "$arf" ]; then
+	cp $arf $arfdir
+    fi 
+done
 
 #Write PDF help file...
 if [ -f "$readmefile" ]; 
@@ -48,8 +61,8 @@ fi
 
 #adding/aliasing shortcut to paths....
  
-cp ./$scrptname $HOME/auxpyscrpt/
-cp ./$scrptname2 $HOME/auxpyscrpt/
+cp ./$scrptname $HOME/$auxpyfname
+cp ./$scrptname2 $HOME/$auxpyfname
     
 if [ -f $HOME/.bashrc ]; then 
 
@@ -58,8 +71,8 @@ if [ -f $HOME/.bashrc ]; then
     sed -i '/sxtARFModule/d' $HOME/.bashrc
 
     echo "#For using SXT EEF/ARF Modules" >>$HOME/.bashrc
-    echo 'alias sxtARFModule="python '$HOME/auxpyscrpt/$scrptname' "' >>$HOME/.bashrc
-    echo 'alias sxtEEFmaker="python '$HOME/auxpyscrpt/$scrptname2' "' >>$HOME/.bashrc
+    echo 'alias sxtARFModule="python '$HOME/$auxpyfname/$scrptname' "' >>$HOME/.bashrc
+    echo 'alias sxtEEFmaker="python '$HOME/$auxpyfname/$scrptname2' "' >>$HOME/.bashrc
     echo " The alias commands \'sxtARFModule\' and \'sxtEEFmaker\' are added to file : $HOME/.bashrc "
 
 elif [ -f $HOME/.profile ]; then
@@ -69,20 +82,15 @@ elif [ -f $HOME/.profile ]; then
     sed -i '/sxtARFModule/d' $HOME/.profile
 
     echo "#For using SXT EEF/ARF Modules" >>$HOME/.profile
-    echo 'alias sxtARFModule="python '$HOME/auxpyscrpt/$scrptname' "' >>$HOME/.profile
-    echo 'alias sxtEEFmaker="python '$HOME/auxpyscrpt/$scrptname2' "' >>$HOME/.profile
+    echo 'alias sxtARFModule="python '$HOME/$auxpyfname/$scrptname' "' >>$HOME/.profile
+    echo 'alias sxtEEFmaker="python '$HOME/$auxpyfname/$scrptname2' "' >>$HOME/.profile
     echo " The alias commands \'sxtARFModule\' and \'sxtEEFmaker\' are added to file : $HOME/.profile "
 
 else
 
     echo "#For using SXT EEF/ARF Modules" >>$HOME/.profile
-    echo 'alias sxtARFModule="python '$HOME/auxpyscrpt/$scrptname' "' >>$HOME/.profile
-    echo 'alias sxtEEFmaker="python '$HOME/auxpyscrpt/$scrptname2' "' >>$HOME/.profile
+    echo 'alias sxtARFModule="python '$HOME/$auxpyfname/$scrptname' "' >>$HOME/.profile
+    echo 'alias sxtEEFmaker="python '$HOME/$auxpyfname/$scrptname2' "' >>$HOME/.profile
     echo " The alias commands \'sxtARFModule\' and \'sxtEEFmaker\' are added to file : $HOME/.profile "
 
 fi
-
- 
-
-
-
